@@ -4,14 +4,12 @@ import com.rest_api.demo.category.actions.*;
 import com.rest_api.demo.category.dto.CategoryResponse;
 import com.rest_api.demo.category.dto.CreateCategoryRequest;
 import com.rest_api.demo.category.dto.UpdateCategoryRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class CategoryService {
 
     private final ListCategoriesAction listCategoriesAction;
@@ -19,6 +17,19 @@ public class CategoryService {
     private final CreateCategoryAction createCategoryAction;
     private final UpdateCategoryAction updateCategoryAction;
     private final DeleteCategoryAction deleteCategoryAction;
+
+    public CategoryService(
+            ListCategoriesAction listCategoriesAction,
+            GetCategoryAction getCategoryAction,
+            CreateCategoryAction createCategoryAction,
+            UpdateCategoryAction updateCategoryAction,
+            DeleteCategoryAction deleteCategoryAction) {
+        this.listCategoriesAction = listCategoriesAction;
+        this.getCategoryAction = getCategoryAction;
+        this.createCategoryAction = createCategoryAction;
+        this.updateCategoryAction = updateCategoryAction;
+        this.deleteCategoryAction = deleteCategoryAction;
+    }
 
     @Transactional(readOnly = true)
     public List<CategoryResponse> getAllCategories() {

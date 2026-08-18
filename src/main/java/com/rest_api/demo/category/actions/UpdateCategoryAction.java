@@ -6,15 +6,18 @@ import com.rest_api.demo.category.entities.Category;
 import com.rest_api.demo.category.mappers.CategoryMapper;
 import com.rest_api.demo.category.repositories.CategoryRepository;
 import com.rest_api.demo.common.exceptions.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class UpdateCategoryAction {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+
+    public UpdateCategoryAction(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+        this.categoryRepository = categoryRepository;
+        this.categoryMapper = categoryMapper;
+    }
 
     public CategoryResponse execute(Long id, UpdateCategoryRequest request) {
         Category category = categoryRepository.findById(id)

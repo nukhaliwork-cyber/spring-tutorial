@@ -25,26 +25,25 @@ public class CategoryMapper {
                     .collect(Collectors.toList());
         }
 
-        return CategoryResponse.builder()
-                .id(entity.getId())
-                .title(entity.getTitle())
-                .description(entity.getDescription())
-                .parentId(entity.getParent() != null ? entity.getParent().getId() : null)
-                .rank(entity.getRank())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .children(childrenResponses)
-                .build();
+        return new CategoryResponse(
+                entity.getId(),
+                entity.getTitle(),
+                entity.getDescription(),
+                entity.getParent() != null ? entity.getParent().getId() : null,
+                entity.getRank(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                childrenResponses
+        );
     }
 
     public Category toEntity(CreateCategoryRequest request, Category parent) {
-        return Category.builder()
-                .title(request.getTitle())
-                .description(request.getDescription())
-                .rank(request.getRank() != null ? request.getRank() : 0)
-                .parent(parent)
-                .children(new ArrayList<>())
-                .build();
+        return new Category(
+                request.getTitle(),
+                request.getDescription(),
+                request.getRank() != null ? request.getRank() : 0,
+                parent
+        );
     }
 
     public void updateEntityFromRequest(Category entity, UpdateCategoryRequest request, Category parent) {

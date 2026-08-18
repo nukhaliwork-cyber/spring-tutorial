@@ -6,7 +6,6 @@ import com.rest_api.demo.category.dto.UpdateCategoryRequest;
 import com.rest_api.demo.category.services.CategoryService;
 import com.rest_api.demo.common.response.ApiResponse;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categories")
-@RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories() {

@@ -2,16 +2,10 @@ package com.rest_api.demo.category.entities;
 
 import com.rest_api.demo.common.entities.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "categories")
 public class Category extends BaseEntity {
@@ -22,7 +16,6 @@ public class Category extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Builder.Default
     @Column(nullable = false)
     private Integer rank = 0;
 
@@ -32,6 +25,56 @@ public class Category extends BaseEntity {
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("rank ASC")
-    @Builder.Default
     private List<Category> children = new ArrayList<>();
+
+    public Category() {
+    }
+
+    public Category(String title, String description, Integer rank, Category parent) {
+        this.title = title;
+        this.description = description;
+        this.rank = rank != null ? rank : 0;
+        this.parent = parent;
+        this.children = new ArrayList<>();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank != null ? rank : 0;
+    }
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
+    }
+
+    public List<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Category> children) {
+        this.children = children;
+    }
 }

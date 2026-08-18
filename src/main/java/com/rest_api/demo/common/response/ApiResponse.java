@@ -1,15 +1,9 @@
 package com.rest_api.demo.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class ApiResponse<T> {
 
@@ -21,6 +15,9 @@ public class ApiResponse<T> {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private PaginationMeta meta;
+
+    public ApiResponse() {
+    }
 
     public static <T> ApiResponse<T> create() {
         return new ApiResponse<>();
@@ -76,5 +73,49 @@ public class ApiResponse<T> {
 
     public ResponseEntity<ApiResponse<T>> response() {
         return ResponseEntity.status(this.statusCode).body(this);
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public PaginationMeta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(PaginationMeta meta) {
+        this.meta = meta;
     }
 }
