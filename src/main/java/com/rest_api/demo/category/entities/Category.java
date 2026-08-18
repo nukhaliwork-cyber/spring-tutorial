@@ -1,10 +1,11 @@
 package com.rest_api.demo.category.entities;
 
 import com.rest_api.demo.common.entities.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,10 +22,16 @@ public class Category extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "parent_id")
-    private Long parentId;
-
     @Builder.Default
     @Column(nullable = false)
     private Integer rank = 0;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+0    private Category parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("rank ASC")
+    @Builder.Default
+    private List<Category> children = new ArrayList<>();
 }

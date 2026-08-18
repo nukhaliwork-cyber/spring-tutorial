@@ -5,6 +5,7 @@ import com.rest_api.demo.category.dto.CreateCategoryRequest;
 import com.rest_api.demo.category.entities.Category;
 import com.rest_api.demo.category.mappers.CategoryMapper;
 import com.rest_api.demo.category.repositories.CategoryRepository;
+import com.rest_api.demo.common.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,13 @@ public class CreateCategoryAction {
     private final CategoryMapper categoryMapper;
 
     public CategoryResponse execute(CreateCategoryRequest request) {
-        Category category = categoryMapper.toEntity(request);
+        Category parent = null;
+        if (request.getParentId() != null && request.getParentId() > 0) {
+            parent = categoryRepository.findById(request.getParentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Valideyn kateqoriya tapılmadı: ID " + request.getParentId()));
+        }
+
+        Category category = categoryMapper.toEntity(request, parent);
         Category savedCategory = categoryRepository.save(category);
         return categoryMapper.toResponse(savedCategory);
     }

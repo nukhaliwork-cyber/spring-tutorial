@@ -20,7 +20,16 @@ public class UpdateCategoryAction {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ID " + id + " olan kateqoriya tapılmadı"));
 
-        categoryMapper.updateEntityFromRequest(category, request);
+        Category parent = null;
+        if (request.getParentId() != null && request.getParentId() > 0) {
+            if (request.getParentId().equals(id)) {
+                throw new IllegalArgumentException("Kateqoriya özünün valideyni ola bilməz");
+            }
+            parent = categoryRepository.findById(request.getParentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Valideyn kateqoriya tapılmadı: ID " + request.getParentId()));
+        }
+
+        categoryMapper.updateEntityFromRequest(category, request, parent);
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.toResponse(updatedCategory);
     }

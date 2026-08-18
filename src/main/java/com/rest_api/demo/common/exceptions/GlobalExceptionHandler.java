@@ -14,7 +14,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 404 Not Found Exception
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleResourceNotFound(ResourceNotFoundException ex) {
         return ApiResponse.<Object>create()
@@ -22,7 +21,6 @@ public class GlobalExceptionHandler {
                 .response();
     }
 
-    // 422 Unprocessable Entity - Validation Exceptions (@Valid xətaları)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -36,7 +34,6 @@ public class GlobalExceptionHandler {
                 .response();
     }
 
-    // 500 Daxili Server Xətaları
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGenericException(Exception ex) {
         return ApiResponse.<Object>create()

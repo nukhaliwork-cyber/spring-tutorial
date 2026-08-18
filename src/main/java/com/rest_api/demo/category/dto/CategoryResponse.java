@@ -3,6 +3,8 @@ package com.rest_api.demo.category.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,4 +19,7 @@ public class CategoryResponse {
     private Integer rank;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @Builder.Default
+    private List<CategoryResponse> children = new ArrayList<>();
 }

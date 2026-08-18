@@ -17,7 +17,7 @@ public class ListCategoriesAction {
     private final CategoryMapper categoryMapper;
 
     public List<CategoryResponse> execute() {
-        return categoryRepository.findAllByOrderByRankAsc()
+        return categoryRepository.findByParentIsNullOrderByRankAsc()
                 .stream()
                 .map(categoryMapper::toResponse)
                 .collect(Collectors.toList());

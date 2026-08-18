@@ -9,8 +9,5 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     
-    // Parent ID-yə və rank-a görə sıralama ilə tapmaq üçün nümunə metod
-    List<Category> findAllByOrderByRankAsc();
-    
-    List<Category> findByParentIdOrderByRankAsc(Long parentId);
+    List<Category> findByParentIsNullOrderByRankAsc();
 }

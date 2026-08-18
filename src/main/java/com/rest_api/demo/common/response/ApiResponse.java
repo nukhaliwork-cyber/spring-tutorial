@@ -22,12 +22,10 @@ public class ApiResponse<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private PaginationMeta meta;
 
-    // Fluent zəncirvari yaratma: ApiResponse.<CategoryResponse>create()
     public static <T> ApiResponse<T> create() {
         return new ApiResponse<>();
     }
 
-    // Success metodları (Laravel trait-dəki success() kimi)
     public ApiResponse<T> success(String message, int statusCode) {
         this.success = true;
         this.error = false;
@@ -44,7 +42,6 @@ public class ApiResponse<T> {
         return success(null, HttpStatus.OK.value());
     }
 
-    // Error metodları (Laravel trait-dəki error() kimi)
     public ApiResponse<T> error(String message, int statusCode) {
         this.success = false;
         this.error = true;
@@ -57,7 +54,6 @@ public class ApiResponse<T> {
         return error(message, HttpStatus.BAD_REQUEST.value());
     }
 
-    // Data set etmək (Laravel trait-dəki setData() kimi)
     public ApiResponse<T> data(T data) {
         this.data = data;
         return this;
@@ -68,19 +64,16 @@ public class ApiResponse<T> {
         return this;
     }
 
-    // Səhifələmə (Pagination) üçün meta əlavə etmək
     public ApiResponse<T> meta(PaginationMeta meta) {
         this.meta = meta;
         return this;
     }
 
-    // Status code xüsusi dəyişmək üçün
     public ApiResponse<T> statusCode(int statusCode) {
         this.statusCode = statusCode;
         return this;
     }
 
-    // Laravel-dəki return $this->response() analoqu:
     public ResponseEntity<ApiResponse<T>> response() {
         return ResponseEntity.status(this.statusCode).body(this);
     }

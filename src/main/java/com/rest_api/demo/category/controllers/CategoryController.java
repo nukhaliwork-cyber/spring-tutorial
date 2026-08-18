@@ -20,7 +20,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    // 1. GET ALL: http://localhost:8080/api/v1/categories
     @GetMapping
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories() {
         List<CategoryResponse> categories = categoryService.getAllCategories();
@@ -31,7 +30,6 @@ public class CategoryController {
                 .response();
     }
 
-    // 2. GET BY ID: http://localhost:8080/api/v1/categories/{id}
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> getCategoryById(@PathVariable Long id) {
         CategoryResponse category = categoryService.getCategoryById(id);
@@ -42,7 +40,6 @@ public class CategoryController {
                 .response();
     }
 
-    // 3. CREATE (POST): http://localhost:8080/api/v1/categories
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> createCategory(@Valid @RequestBody CreateCategoryRequest request) {
         CategoryResponse created = categoryService.createCategory(request);
@@ -53,7 +50,6 @@ public class CategoryController {
                 .response();
     }
 
-    // 4. UPDATE (PUT): http://localhost:8080/api/v1/categories/{id}
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
             @PathVariable Long id,
@@ -66,7 +62,6 @@ public class CategoryController {
                 .response();
     }
 
-    // 5. DELETE: http://localhost:8080/api/v1/categories/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
