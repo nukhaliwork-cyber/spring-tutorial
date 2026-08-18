@@ -1,26 +1,78 @@
 package com.rest_api.demo.category.controllers;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.rest_api.demo.category.dto.CategoryResponse;
+import com.rest_api.demo.category.dto.CreateCategoryRequest;
+import com.rest_api.demo.category.dto.UpdateCategoryRequest;
+import com.rest_api.demo.category.services.CategoryService;
+import com.rest_api.demo.common.response.ApiResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/categories")
+@RequiredArgsConstructor
 public class CategoryController {
 
-    @Value("${spring.application.name:demo}")
-    private String appName;
+    private final CategoryService categoryService;
 
+    // 1. GET ALL: http://localhost:8080/api/v1/categories
     @GetMapping
-    public List<Map<String, Object>> getAllCategories() {
-        return List.of(
-            Map.of("id", 1, "name", "Texnologiya", "app", appName),
-            Map.of("id", 2, "name", "Dizayn", "app", appName)
-        );
+    public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories() {
+        List<CategoryResponse> categories = categoryService.getAllCategories();
+        
+        return ApiResponse.<List<CategoryResponse>>create()
+                .success("Kateqoriyalar uğurla gətirildi")
+                .data(categories)
+                .response();
     }
 
+    // 2. GET BY ID: http://localhost:8080/api/v1/categories/{id}
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<CategoryResponse>> getCategoryById(@PathVariable Long id) {
+        CategoryResponse category = categoryService.getCategoryById(id);
+        
+        return ApiResponse.<CategoryResponse>create()
+                .success("Kateqoriya tapıldı")
+                .data(category)
+                .response();
+    }
+
+    // 3. CREATE (POST): http://localhost:8080/api/v1/categories
+    @PostMapping
+    public ResponseEntity<ApiResponse<CategoryResponse>> createCategory(@Valid @RequestBody CreateCategoryRequest request) {
+        CategoryResponse created = categoryService.createCategory(request);
+        
+        return ApiResponse.<CategoryResponse>create()
+                .success("Kateqoriya uğurla yaradıldı", HttpStatus.CREATED.value())
+                .data(created)
+                .response();
+    }
+
+    // 4. UPDATE (PUT): http://localhost:8080/api/v1/categories/{id}
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateCategoryRequest request) {
+        CategoryResponse updated = categoryService.updateCategory(id, request);
+        
+        return ApiResponse.<CategoryResponse>create()
+                .success("Kateqoriya uğurla yeniləndi")
+                .data(updated)
+                .response();
+    }
+
+    // 5. DELETE: http://localhost:8080/api/v1/categories/{id}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategory(id);
+        
+        return ApiResponse.<Void>create()
+                .success("Kateqoriya uğurla silindi")
+                .response();
+    }
 }
