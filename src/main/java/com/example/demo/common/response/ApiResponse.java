@@ -1,10 +1,10 @@
 package com.example.demo.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +13,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Slf4j
 public class ApiResponse<T> {
 
     private Boolean success = true;
@@ -30,6 +28,15 @@ public class ApiResponse<T> {
 
     private LocalDateTime timestamp = LocalDateTime.now();
 
+    public ApiResponse(Boolean success, String message, T data, Object errors, PaginationMeta meta, LocalDateTime timestamp) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+        this.errors = errors;
+        this.meta = meta;
+        this.timestamp = timestamp != null ? timestamp : LocalDateTime.now();
+    }
+
     public static <T> ApiResponseBuilder<T> builder() {
         return new ApiResponseBuilder<>();
     }
@@ -38,6 +45,8 @@ public class ApiResponse<T> {
     // Fluent Builder & Response Helper
     // =========================================================================
     public static class ApiResponseBuilder<T> {
+        private static final Logger log = LoggerFactory.getLogger(ApiResponse.class);
+
         private Boolean success = true;
         private String message;
         private T data;
