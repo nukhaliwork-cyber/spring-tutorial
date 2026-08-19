@@ -16,7 +16,6 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<dotenv.version>4.0.0</dotenv.version>
 	</properties>
 
 	<dependencies>
@@ -36,13 +35,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-		<!-- .env file support (Dotenv starter for Spring Boot) -->
-		<dependency>
-			<groupId>me.paulschwarz</groupId>
-			<artifactId>springboot-dotenv</artifactId>
-			<version>${dotenv.version}</version>
 		</dependency>
 
 		<!-- Embedded In-Memory Database (H2 Database) -->
