@@ -1,8 +1,3 @@
-# Read Me First
-The following was discovered as part of building this project:
-
-* The original package name 'com.rest-api.demo' is invalid and this project uses 'com.rest_api.demo' instead.
-
 # Getting Started
 
 ### Reference Documentation
